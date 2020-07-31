@@ -1,6 +1,6 @@
 {
   "name": "axios-hooks-mock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library that simplifies mocking for axios-hooks, especially when multiple hooks are used together.",
   "main": "dist/index.js",
   "scripts": {
