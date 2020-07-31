@@ -4,9 +4,21 @@ import querystring from 'querystring';
 import AxiosHooksTuple from './AxiosHooksTuple';
 import AxiosHooksArray from './AxiosHooksArray';
 
+/**
+ * The main class for the library.
+ * 1. Instantiate: new AxiosHooksMock(implementations)
+ * 2. Add more implementations (if needed): .get('url', implementation)
+ * 3. Implement (completes the chain, creates mock implementation): .implement();
+ *
+ * This class is chainable, and aside from implement(), always returns itself.
+ */
 export default class AxiosHooksMock {
     private implementations = new Map<string, AxiosHooksTuple>();
 
+    /**
+     * Standard constructor for the class
+     * @param mockItems Optional, @see AxiosHooksMockItem
+     */
     constructor(
         mockItems?: {
             config: AxiosRequestConfig | string;
@@ -53,6 +65,12 @@ export default class AxiosHooksMock {
     private buildCompositeKey = (url: string, method: Method = 'GET') =>
         `${method.toUpperCase()}|${url}`;
 
+    /**
+     * The only method of adding mock implementations to the greater mock class.
+     * All constructors and convenience methods call this method, but this can also be called externally.
+     * @param config @see AxiosRequestConfig or string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public addImplementation(
         config: AxiosRequestConfig | string,
         implementation: AxiosHooksTuple
@@ -64,18 +82,38 @@ export default class AxiosHooksMock {
         return this;
     }
 
+    /**
+     * Convenience method to add a get implementation
+     * @param url as string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public get(url: string, implementation: AxiosHooksTuple): AxiosHooksMock {
         return this.addImplementation(url, implementation);
     }
 
+    /**
+     * Convenience method to add a post implementation
+     * @param url as string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public post(url: string, implementation: AxiosHooksTuple): AxiosHooksMock {
         return this.addImplementation({ url, method: 'POST' }, implementation);
     }
 
+    /**
+     * Convenience method to add a patch implementation
+     * @param url as string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public patch(url: string, implementation: AxiosHooksTuple): AxiosHooksMock {
         return this.addImplementation({ url, method: 'PATCH' }, implementation);
     }
 
+    /**
+     * Convenience method to add a delete implementation
+     * @param url as string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public delete(
         url: string,
         implementation: AxiosHooksTuple
@@ -86,6 +124,9 @@ export default class AxiosHooksMock {
         );
     }
 
+    /**
+     * Calling this completes the chain, and returns a function that can be used as a mock implementation in jest (or elsewhere).
+     */
     public implement() {
         return (
             config: AxiosRequestConfig | string
