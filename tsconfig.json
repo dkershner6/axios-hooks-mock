@@ -26,6 +26,8 @@
     "jest.config.js",
     "demo-site",
     "**/__test__/**/*.ts",
-    "**/__test__/**/*.tsx"
+    "**/__test__/**/*.tsx",
+    "**/tests/**/*.ts",
+    "**/tests/**/*.tsx"
   ]
 }
