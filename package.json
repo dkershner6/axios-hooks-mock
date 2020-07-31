@@ -7,7 +7,8 @@
     "build": "rimraf dist && tsc",
     "format-check": "prettier --check .",
     "format": "prettier --write .",
-    "test": "jest --coverage --passWithNoTests",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests",
     "lint": "eslint ./src --ext .tsx,.ts",
     "type-check": "tsc --noEmit",
     "clean-packages": "rimraf node_modules && rimraf package-lock.json"
