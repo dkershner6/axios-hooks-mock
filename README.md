@@ -13,6 +13,8 @@ npm i -D axios-hooks-mock
 
 ## Usage
 
+**Full Examples are available in the [tests](https://github.com/dkershner6/axios-hooks-mock/tree/master/src/tests) folder**
+
 There are a few ways to use this library to achieve your complex mocking goals. Examples will use `jest`, but this could also be used with other testing libraries. Any usage of `mocked` is using `ts-jest/utils`.
 
 The library matches on a combination of `method`, `url`, and `params`. You must create one implementation per each combination you want to satisfy.
