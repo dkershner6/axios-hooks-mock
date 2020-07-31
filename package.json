@@ -1,6 +1,6 @@
 {
   "name": "axios-hooks-mock",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library that simplifies mocking for axios-hooks, especially when multiple hooks are used together.",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkershner6/npm-typescript-package-template.git"
+    "url": "git+https://github.com/dkershner6/axios-hooks-mock.git"
   },
   "keywords": [
     "axios",
@@ -27,9 +27,9 @@
   "author": "Derek Kershner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dkershner6/npm-typescript-package-template/issues"
+    "url": "https://github.com/dkershner6/axios-hooks-mock/issues"
   },
-  "homepage": "https://github.com/dkershner6/npm-typescript-package-template#readme",
+  "homepage": "https://github.com/dkershner6/axios-hooks-mock#readme",
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
