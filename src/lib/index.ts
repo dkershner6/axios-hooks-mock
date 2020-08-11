@@ -105,6 +105,15 @@ export default class AxiosHooksMock {
      * @param url as string
      * @param implementation @see AxiosHooksTuple - The standard output from useAxios
      */
+    public put(url: string, implementation: AxiosHooksTuple): AxiosHooksMock {
+        return this.addImplementation({ url, method: 'PUT' }, implementation);
+    }
+
+    /**
+     * Convenience method to add a patch implementation
+     * @param url as string
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
     public patch(url: string, implementation: AxiosHooksTuple): AxiosHooksMock {
         return this.addImplementation({ url, method: 'PATCH' }, implementation);
     }

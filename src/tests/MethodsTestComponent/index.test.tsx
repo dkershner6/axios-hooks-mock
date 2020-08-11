@@ -3,7 +3,8 @@ import MethodsTestComponent, {
     GET_API_ROUTE,
     POST_API_ROUTE,
     PATCH_API_ROUTE,
-    DELETE_API_ROUTE
+    DELETE_API_ROUTE,
+    PUT_API_ROUTE
 } from '.';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
@@ -22,6 +23,7 @@ describe('Methods', () => {
         it('Should render four different responses', () => {
             const refetchGet = jest.fn();
             const refetchPost = jest.fn();
+            const refetchPut = jest.fn();
             const refetchPatch = jest.fn();
             const refetchDelete = jest.fn();
 
@@ -34,6 +36,10 @@ describe('Methods', () => {
                     .post('https://api.com/api/123', [
                         { data: 'dataPost', loading: false },
                         refetchPost
+                    ])
+                    .put('https://api.com/api/123', [
+                        { data: 'dataPut', loading: false },
+                        refetchPut
                     ])
                     .patch('https://api.com/api/123', [
                         { data: 'dataPatch', loading: false },
@@ -48,16 +54,21 @@ describe('Methods', () => {
 
             const { getByTestId } = render(<MethodsTestComponent />);
 
-            ['dataGet', 'dataPost', 'dataPatch', 'dataDelete'].forEach(
-                (dataString) => {
-                    expect(getByTestId(dataString)).toContainHTML(dataString);
-                }
-            );
+            [
+                'dataGet',
+                'dataPost',
+                'dataPut',
+                'dataPatch',
+                'dataDelete'
+            ].forEach((dataString) => {
+                expect(getByTestId(dataString)).toContainHTML(dataString);
+            });
         });
 
         it('Should fire four different functions on refetches', () => {
             const refetchGet = jest.fn();
             const refetchPost = jest.fn();
+            const refetchPut = jest.fn();
             const refetchPatch = jest.fn();
             const refetchDelete = jest.fn();
 
@@ -70,6 +81,10 @@ describe('Methods', () => {
                     .post('https://api.com/api/123', [
                         { data: 'dataPost', loading: false },
                         refetchPost
+                    ])
+                    .put('https://api.com/api/123', [
+                        { data: 'dataPut', loading: false },
+                        refetchPut
                     ])
                     .patch('https://api.com/api/123', [
                         { data: 'dataPatch', loading: false },
@@ -86,6 +101,7 @@ describe('Methods', () => {
 
             expect(refetchGet).not.toHaveBeenCalled();
             expect(refetchPost).not.toHaveBeenCalled();
+            expect(refetchPut).not.toHaveBeenCalled();
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -93,6 +109,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).not.toHaveBeenCalled();
+            expect(refetchPut).not.toHaveBeenCalled();
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -100,6 +117,15 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).not.toHaveBeenCalled();
+            expect(refetchPatch).not.toHaveBeenCalled();
+            expect(refetchDelete).not.toHaveBeenCalled();
+
+            fireEvent.click(getByTestId('refetchPut'));
+
+            expect(refetchGet).toHaveBeenCalledTimes(1);
+            expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -107,6 +133,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).toHaveBeenCalledTimes(1);
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -114,6 +141,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).toHaveBeenCalledTimes(1);
             expect(refetchDelete).toHaveBeenCalledTimes(1);
         });
@@ -123,6 +151,7 @@ describe('Methods', () => {
         it('Should render four different responses', () => {
             const refetchGet = jest.fn();
             const refetchPost = jest.fn();
+            const refetchPut = jest.fn();
             const refetchPatch = jest.fn();
             const refetchDelete = jest.fn();
             const implementations: AxiosHooksMockItem[] = [
@@ -138,6 +167,13 @@ describe('Methods', () => {
                     implementation: [
                         { data: 'dataPost', loading: false },
                         refetchPost
+                    ]
+                },
+                {
+                    config: PUT_API_ROUTE,
+                    implementation: [
+                        { data: 'dataPut', loading: false },
+                        refetchPut
                     ]
                 },
                 {
@@ -172,6 +208,7 @@ describe('Methods', () => {
         it('Should fire four different functions on refetches', () => {
             const refetchGet = jest.fn();
             const refetchPost = jest.fn();
+            const refetchPut = jest.fn();
             const refetchPatch = jest.fn();
             const refetchDelete = jest.fn();
             const implementations: AxiosHooksMockItem[] = [
@@ -187,6 +224,13 @@ describe('Methods', () => {
                     implementation: [
                         { data: 'dataPost', loading: false },
                         refetchPost
+                    ]
+                },
+                {
+                    config: PUT_API_ROUTE,
+                    implementation: [
+                        { data: 'dataPut', loading: false },
+                        refetchPut
                     ]
                 },
                 {
@@ -213,6 +257,7 @@ describe('Methods', () => {
 
             expect(refetchGet).not.toHaveBeenCalled();
             expect(refetchPost).not.toHaveBeenCalled();
+            expect(refetchPut).not.toHaveBeenCalled();
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -220,6 +265,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).not.toHaveBeenCalled();
+            expect(refetchPut).not.toHaveBeenCalled();
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -227,6 +273,15 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).not.toHaveBeenCalled();
+            expect(refetchPatch).not.toHaveBeenCalled();
+            expect(refetchDelete).not.toHaveBeenCalled();
+
+            fireEvent.click(getByTestId('refetchPut'));
+
+            expect(refetchGet).toHaveBeenCalledTimes(1);
+            expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).not.toHaveBeenCalled();
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -234,6 +289,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).toHaveBeenCalledTimes(1);
             expect(refetchDelete).not.toHaveBeenCalled();
 
@@ -241,6 +297,7 @@ describe('Methods', () => {
 
             expect(refetchGet).toHaveBeenCalledTimes(1);
             expect(refetchPost).toHaveBeenCalledTimes(1);
+            expect(refetchPut).toHaveBeenCalledTimes(1);
             expect(refetchPatch).toHaveBeenCalledTimes(1);
             expect(refetchDelete).toHaveBeenCalledTimes(1);
         });
