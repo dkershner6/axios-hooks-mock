@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
     "rootDir": "src",
@@ -10,7 +10,7 @@
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
