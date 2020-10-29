@@ -90,6 +90,36 @@ mocked(useAxios).mockImplementation(
 );
 ```
 
+### Default Implementation
+
+This allows you to return a tuple when nothing matches, as a backup. Two ways to use it, similar to other methods.
+
+#### default()
+
+```typescript
+import AxiosHooksMock from 'axios-hooks-mock';
+
+const refetch = jest.fn();
+mocked(useAxios).mockImplementation(
+    new AxiosHooksMock()
+        .get('https://testapi.com', [
+            { data: { testData: 'theData' }, loading: false },
+            refetch
+        ])
+        .default([{ data: undefined, loading: false }])
+        .implement()
+);
+```
+
+#### Second param of constructor
+
+```typescript
+const default = [{ data: undefined, loading: false }];
+mocked(useAxios).mockImplementation(
+    new AxiosHooksMock(implementations, default).implement()
+);
+```
+
 ## Alternate constructor
 
 If you like: `AxiosHooksMock.construct(implementations).implement();`

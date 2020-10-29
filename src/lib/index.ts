@@ -14,6 +14,7 @@ import AxiosHooksArray from './AxiosHooksArray';
  */
 export default class AxiosHooksMock {
     private implementations = new Map<string, AxiosHooksTuple>();
+    private defaultImplementation: AxiosHooksTuple;
 
     /**
      * Standard constructor for the class
@@ -23,7 +24,8 @@ export default class AxiosHooksMock {
         mockItems?: {
             config: AxiosRequestConfig | string;
             implementation: AxiosHooksTuple | AxiosHooksArray;
-        }[]
+        }[],
+        defaultImplementation?: AxiosHooksTuple
     ) {
         if (mockItems) {
             mockItems.forEach((mockItem) => {
@@ -32,6 +34,9 @@ export default class AxiosHooksMock {
                     mockItem.implementation as AxiosHooksTuple
                 );
             });
+        }
+        if (defaultImplementation) {
+            this.defaultImplementation = defaultImplementation;
         }
     }
 
@@ -134,6 +139,15 @@ export default class AxiosHooksMock {
     }
 
     /**
+     * If no other implementation matches, this implementation is returned as a backup.
+     * @param implementation @see AxiosHooksTuple - The standard output from useAxios
+     */
+    public default(implementation: AxiosHooksTuple): AxiosHooksMock {
+        this.defaultImplementation = implementation;
+        return this;
+    }
+
+    /**
      * Calling this completes the chain, and returns a function that can be used as a mock implementation in jest (or elsewhere).
      */
     public implement() {
@@ -150,6 +164,9 @@ export default class AxiosHooksMock {
             const compositeKey = this.buildCompositeKey(url, method);
 
             const response = this.implementations.get(compositeKey);
+            if (!response && this.defaultImplementation) {
+                return this.defaultImplementation;
+            }
             return response;
         };
     }
