@@ -45,9 +45,10 @@ export default class AxiosHooksMock {
         mockItems?: {
             config: AxiosRequestConfig | string;
             implementation: AxiosHooksTuple | AxiosHooksArray;
-        }[]
+        }[],
+        defaultImplementation?: AxiosHooksTuple
     ): AxiosHooksMock {
-        return new AxiosHooksMock(mockItems);
+        return new AxiosHooksMock(mockItems, defaultImplementation);
     }
 
     private detectUrlAndMethod = (

@@ -203,4 +203,57 @@ describe('AxiosHooksMock', () => {
 
         expect(reload).not.toHaveBeenCalled();
     });
+
+    describe('Default', () => {
+        it('Should return default with no match (convenience method)', () => {
+            const testData = { testDefault: true };
+            const reload = jest.fn();
+            mocked(useAxios).mockImplementation(
+                new AxiosHooksMock()
+                    .addImplementation('not_correct', [
+                        { data: undefined, loading: true },
+                        reload
+                    ])
+                    .default([{ data: testData, loading: false }, jest.fn()])
+                    .implement()
+            );
+
+            const { queryByTestId } = render(<SimpleTestComponent />);
+
+            expect(queryByTestId('data')).toContainHTML(
+                JSON.stringify(testData)
+            );
+            expect(queryByTestId('loading')).toBeNull();
+            expect(queryByTestId('error')).toBeNull();
+
+            expect(reload).not.toHaveBeenCalled();
+        });
+
+        it('Should return default with no match (constructor method)', () => {
+            const testData = { testDefault: true };
+            const reload = jest.fn();
+            const implementations = [
+                {
+                    config: 'not_correct',
+                    implementation: [{ data: 'test', loading: false }, reload]
+                }
+            ];
+            mocked(useAxios).mockImplementation(
+                new AxiosHooksMock(implementations, [
+                    { data: testData, loading: false },
+                    jest.fn()
+                ]).implement()
+            );
+
+            const { queryByTestId } = render(<SimpleTestComponent />);
+
+            expect(queryByTestId('data')).toContainHTML(
+                JSON.stringify(testData)
+            );
+            expect(queryByTestId('loading')).toBeNull();
+            expect(queryByTestId('error')).toBeNull();
+
+            expect(reload).not.toHaveBeenCalled();
+        });
+    });
 });
